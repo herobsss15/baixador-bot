@@ -5,6 +5,7 @@ import tempfile
 import asyncio
 
 TOKEN = os.getenv("TOKEN")
+COOKIES_PATH = "/etc/secrets/cookies.txt"  
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -37,6 +38,8 @@ async def on_message(message):
                     'noplaylist': True,
                     'format': 'bestaudio/best' if formato == 'mp3' else 'bestvideo+bestaudio/best',
                     'outtmpl': outtmpl,
+                    'cookiefile': COOKIES_PATH,  
+                    'quiet': True,
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': formato,
