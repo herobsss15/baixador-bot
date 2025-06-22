@@ -34,11 +34,17 @@ async def on_message(message):
         try:
             with tempfile.TemporaryDirectory() as tmpdir:
                 outtmpl = os.path.join(tmpdir, '%(title)s.%(ext)s')
+
+                # Copiar cookies para um arquivo temporário
+                cookie_tmp_path = os.path.join(tmpdir, "cookies.txt")
+                with open(COOKIES_PATH, "r") as f_in, open(cookie_tmp_path, "w") as f_out:
+                    f_out.write(f_in.read())
+
                 ydl_opts = {
                     'noplaylist': True,
                     'format': 'bestaudio/best' if formato == 'mp3' else 'bestvideo+bestaudio/best',
                     'outtmpl': outtmpl,
-                    'cookiefile': COOKIES_PATH,  
+                    'cookiefile': cookie_tmp_path,
                     'quiet': True,
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
